@@ -2,8 +2,7 @@ import { formatJSONResponse } from '@libs/api-gateway';
 import { middyfy } from '@libs/lambda';
 import { products } from '../../mocks/products';
 
-const getProductsList = async (event: any) => {
-  console.log('+++++++', event)
+const getProductsList = async () => {
   try {
     return formatJSONResponse(products);
   } catch (error) {
