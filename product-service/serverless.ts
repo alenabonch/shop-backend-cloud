@@ -6,7 +6,10 @@ import getProductsById from '@functions/getProductsById';
 const serverlessConfiguration: AWS = {
   service: 'product-service',
   frameworkVersion: '3',
-  plugins: ['serverless-esbuild'],
+  plugins: [
+    'serverless-auto-swagger',
+    'serverless-esbuild'
+  ],
   provider: {
     name: 'aws',
     runtime: 'nodejs20.x',
@@ -21,8 +24,11 @@ const serverlessConfiguration: AWS = {
     },
   },
   // import the function via paths
-  functions: { getProductsList, getProductsById },
-  package: { individually: true },
+  functions: {
+    getProductsList,
+    getProductsById,
+  },
+  package: {individually: true},
   custom: {
     esbuild: {
       bundle: true,
@@ -30,10 +36,15 @@ const serverlessConfiguration: AWS = {
       sourcemap: true,
       exclude: ['aws-sdk'],
       target: 'node14',
-      define: { 'require.resolve': undefined },
+      define: {'require.resolve': undefined},
       platform: 'node',
       concurrency: 10,
     },
+    autoswagger: {
+      apiType: 'http',
+      basePath: '/${sls:stage}',
+      typefiles: ['./src/models/product.ts'],
+    }
   },
 };
 
