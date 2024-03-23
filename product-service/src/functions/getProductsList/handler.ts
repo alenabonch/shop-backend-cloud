@@ -1,13 +1,13 @@
 import { formatJSONResponse } from '@libs/api-gateway';
+import { getJsonFromS3 } from '@libs/aws-utils';
 import { middyfy } from '@libs/lambda';
-import { getJsonFromS3 } from '../../utils/get-json-from-s3';
 
-const getProductsList = async () => {
+export const getProductsList = async () => {
   try {
     const products = await getJsonFromS3('my-first-live-app', 'products.json');
     return formatJSONResponse(products);
   } catch (error) {
-    return formatJSONResponse({error});
+    return formatJSONResponse({error}, 500);
   }
 };
 
