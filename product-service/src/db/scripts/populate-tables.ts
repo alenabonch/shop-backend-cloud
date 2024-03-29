@@ -2,8 +2,8 @@ import { readFileSync } from "fs";
 import { batchWrite } from '../commands/batch-write';
 
 const tablesToPopulate: { tableName: string, filePath: string }[] = [
-  {tableName: 'Products', filePath: 'src/dynamodb/data/products.json'},
-  {tableName: 'Stocks', filePath: 'src/dynamodb/data/stocks.json'},
+  {tableName: 'Products', filePath: 'src/db/data/products.json'},
+  {tableName: 'Stocks', filePath: 'src/db/data/stocks.json'},
 ];
 
 const populateTable = async (tableName: string, filePath: string) => {

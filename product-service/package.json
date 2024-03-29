@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --watchAll",
     "deploy": "sls deploy",
-    "populate-tables": "npx ts-node src/dynamodb/populate-tables.ts"
+    "populate-tables": "npx ts-node src/db/scripts/populate-tables.ts"
   },
   "engines": {
     "node": ">=20.0.0"
