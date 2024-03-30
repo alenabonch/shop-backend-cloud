@@ -2,8 +2,8 @@ import { readFileSync } from "fs";
 import { batchWrite } from '../commands/batch-write';
 
 const data: { tableName: string, filePath: string }[] = [
-  {tableName: 'Products', filePath: 'src/db/data/products.json'},
-  {tableName: 'Stocks', filePath: 'src/db/data/stocks.json'},
+  {tableName: 'products', filePath: 'src/db/data/products.json'},
+  {tableName: 'stocks', filePath: 'src/db/data/stocks.json'},
 ];
 
 const populateData = async (tableName: string, filePath: string) => {

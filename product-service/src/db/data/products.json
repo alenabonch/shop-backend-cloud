@@ -1,38 +1,44 @@
 [
   {
-    "description": "Product from Backend 1",
-    "id": "7567ec4b-b10c-48c5-9345-fc73c48a80aa",
+    "description": "Sweet Praline",
+    "id": "1567ec4b-b10c-48c5-9345-fc73c48a80aa",
     "price": 24,
-    "title": "Product1fromDB"
+    "title": "Praline"
   },
   {
-    "description": "Product from Backend 2",
+    "description": "Sweet Chocolate",
+    "id": "2567ec4b-b10c-48c5-9345-fc73c48a80a1",
+    "price": 15,
+    "title": "Chocolate"
+  },
+  {
+    "description": "Sweet Cake",
+    "id": "3567ec4b-b10c-48c5-9345-fc73c48a80a3",
+    "price": 23,
+    "title": "Cake"
+  },
+  {
+    "description": "Sweet Muffin",
+    "id": "4567ec4b-b10c-48c5-9345-fc73348a80a1",
+    "price": 15,
+    "title": "Muffin"
+  },
+  {
+    "description": "Sweet Candy",
+    "id": "5567ec4b-b10c-48c5-9445-fc73c48a80a2",
+    "price": 23,
+    "title": "Candy"
+  },
+  {
+    "description": "Sweet Cookie",
+    "id": "6567ec4b-b10c-45c5-9345-fc73c48a80a1",
+    "price": 15,
+    "title": "Cookie"
+  },
+  {
+    "description": "Sweet Lemon Cake",
     "id": "7567ec4b-b10c-48c5-9345-fc73c48a80a1",
-    "price": 15,
-    "title": "Product2fromDB"
-  },
-  {
-    "description": "Short Product Description2",
-    "id": "7567ec4b-b10c-48c5-9345-fc73c48a80a3",
-    "price": 23,
-    "title": "Product"
-  },
-  {
-    "description": "Short Product Description4",
-    "id": "7567ec4b-b10c-48c5-9345-fc73348a80a1",
-    "price": 15,
-    "title": "ProductTest"
-  },
-  {
-    "description": "Short Product Descriptio1",
-    "id": "7567ec4b-b10c-48c5-9445-fc73c48a80a2",
-    "price": 23,
-    "title": "Product2"
-  },
-  {
-    "description": "Short Product Description7",
-    "id": "7567ec4b-b10c-45c5-9345-fc73c48a80a1",
-    "price": 15,
-    "title": "ProductName"
+    "price": 30,
+    "title": "Lemon Cake"
   }
 ]

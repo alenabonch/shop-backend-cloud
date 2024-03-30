@@ -8,7 +8,9 @@ const serverlessConfiguration: AWS = {
   frameworkVersion: '3',
   plugins: [
     'serverless-auto-swagger',
-    'serverless-esbuild'
+    'serverless-esbuild',
+    'serverless-offline',
+    'serverless-dynamodb',
   ],
   provider: {
     name: 'aws',
@@ -21,8 +23,37 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
-      PRODUCTS_TABLE: 'Products',
-      STOCKS_TABLE: 'Stocks',
+      PRODUCTS_TABLE: 'products',
+      STOCKS_TABLE: 'stocks',
+    },
+    iam: {
+      role: {
+        statements: [
+          {
+            Effect: 'Allow',
+            Action: [
+              'dynamodb:Query',
+              'dynamodb:Scan',
+              'dynamodb:GetItem',
+              'dynamodb:PutItem',
+              'dynamodb:UpdateItem',
+              'dynamodb:DeleteItem',
+            ],
+            Resource: 'arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.PRODUCTS_TABLE}',
+          },
+          {
+            Effect: 'Allow',
+            Action: [
+              'dynamodb:Query',
+              'dynamodb:Scan',
+              'dynamodb:GetItem',
+              'dynamodb:PutItem',
+              'dynamodb:UpdateItem',
+              'dynamodb:DeleteItem',
+            ],
+            Resource: 'arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.STOCKS_TABLE}',
+          }],
+      },
     },
   },
   // import the function via paths
@@ -42,12 +73,77 @@ const serverlessConfiguration: AWS = {
       platform: 'node',
       concurrency: 10,
     },
+    dynamodb: {
+      start: {
+        port: 5000,
+        inMemory: true,
+        migrate: true,
+      },
+      stages: 'dev'
+    },
     autoswagger: {
       apiType: 'http',
       basePath: '/${sls:stage}',
       typefiles: ['./src/models/product.ts'],
     }
   },
+  resources: {
+    Resources: {
+      ProductsTable: {
+        Type: 'AWS::DynamoDB::Table',
+        Properties: {
+          TableName: '${self:provider.environment.PRODUCTS_TABLE}',
+          AttributeDefinitions: [
+            {
+              AttributeName: 'id',
+              AttributeType: 'S',
+            },
+            {
+              AttributeName: 'title',
+              AttributeType: 'S',
+            }
+          ],
+          KeySchema: [
+            {
+              AttributeName: 'id',
+              KeyType: 'HASH'
+            },
+            {
+              AttributeName: 'title',
+              KeyType: 'RANGE'
+            }
+          ],
+          ProvisionedThroughput: {
+            ReadCapacityUnits: 1,
+            WriteCapacityUnits: 1
+          },
+
+        }
+      },
+      StocksTable: {
+        Type: 'AWS::DynamoDB::Table',
+        Properties: {
+          TableName: '${self:provider.environment.STOCKS_TABLE}',
+          AttributeDefinitions: [
+            {
+              AttributeName: 'product_id',
+              AttributeType: 'S',
+            },
+          ],
+          KeySchema: [
+            {
+              AttributeName: 'product_id',
+              KeyType: 'HASH',
+            },
+          ],
+          ProvisionedThroughput: {
+            ReadCapacityUnits: 1,
+            WriteCapacityUnits: 1,
+          },
+        },
+      },
+    }
+  }
 };
 
 module.exports = serverlessConfiguration;

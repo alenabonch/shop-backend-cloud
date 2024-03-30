@@ -1,11 +1,19 @@
 import { formatJSONResponse } from '@libs/api-gateway';
-import { getJsonFromS3 } from '@libs/aws-utils';
 import { middyfy } from '@libs/lambda';
+import { Product, ProductWithStock, Stock } from 'src/models/product';
+import { getAllItems } from '../../db/commands/get-all-items';
 
 export const getProductsList = async () => {
   try {
-    const products = await getJsonFromS3('my-first-live-app', 'products.json');
-    return formatJSONResponse(products);
+    const products: Product[] = await getAllItems(process.env.PRODUCTS_TABLE);
+    const stocks: Stock[] = await getAllItems(process.env.STOCKS_TABLE);
+
+    const result: ProductWithStock[] = products.map((product) => {
+      const stock = stocks.find((stock) => stock.product_id === product.id);
+      return {...product, count: stock?.count || 0};
+    });
+
+    return formatJSONResponse(result);
   } catch (error) {
     return formatJSONResponse({error}, 500);
   }
