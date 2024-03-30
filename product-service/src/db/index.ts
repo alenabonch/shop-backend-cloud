@@ -4,6 +4,6 @@ import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 const client = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(client);
 
-export function dynamoDbDocumentClient(): DynamoDBDocumentClient {
+export function getDynamoDbDocumentClient(): DynamoDBDocumentClient {
   return docClient;
 }

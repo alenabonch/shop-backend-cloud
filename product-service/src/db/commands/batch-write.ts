@@ -1,8 +1,5 @@
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { BatchWriteCommand, DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
-
-const client = new DynamoDBClient({});
-const docClient = DynamoDBDocumentClient.from(client);
+import { BatchWriteCommand } from "@aws-sdk/lib-dynamodb";
+import { getDynamoDbDocumentClient } from '../index';
 
 export async function batchWrite(tableName: string, items: any[]) {
   console.log('Batch write operation');
@@ -19,5 +16,5 @@ export async function batchWrite(tableName: string, items: any[]) {
     },
   });
 
-  await docClient.send(command);
+  await getDynamoDbDocumentClient().send(command);
 }

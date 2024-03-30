@@ -1,11 +1,8 @@
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient, QueryCommand, } from "@aws-sdk/lib-dynamodb";
-
-const client = new DynamoDBClient({});
-const docClient = DynamoDBDocumentClient.from(client);
+import { QueryCommand, } from "@aws-sdk/lib-dynamodb";
+import { getDynamoDbDocumentClient } from '../index';
 
 export async function getItemByKey(tableName: string, key: string, value: string): Promise<any> {
-  console.log('Getting item from table ', tableName);
+  console.log('Getting item from table', tableName, key, value);
 
   const command = new QueryCommand({
     TableName: tableName,
@@ -15,9 +12,9 @@ export async function getItemByKey(tableName: string, key: string, value: string
     },
   });
 
-  const response = await docClient.send(command);
-  const firstItem = response.Items[0];
+  const response = await getDynamoDbDocumentClient().send(command);
+  const item = response.Items[0];
+  console.log('Found item:', item);
 
-  console.log('First found item:', firstItem);
-  return firstItem;
+  return item;
 }

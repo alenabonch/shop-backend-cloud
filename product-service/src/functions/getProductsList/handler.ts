@@ -5,6 +5,8 @@ import { getAllItems } from '../../db/commands/get-all-items';
 
 export const getProductsList = async () => {
   try {
+    console.log('Get products list handler');
+
     const products: Product[] = await getAllItems(process.env.PRODUCTS_TABLE);
     const stocks: Stock[] = await getAllItems(process.env.STOCKS_TABLE);
 

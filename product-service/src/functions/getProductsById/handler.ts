@@ -5,6 +5,7 @@ import { Product, ProductWithStock, Stock } from '../../models/product';
 
 export const getProductsById = async (event: any) => {
   try {
+    console.log('Get product by id handler', event);
     const productId = event.pathParameters.productId;
 
     const product: Product = await getItemByKey(process.env.PRODUCTS_TABLE, 'id', productId);
