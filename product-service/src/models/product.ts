@@ -11,3 +11,5 @@ export interface Stock {
 }
 
 export type ProductWithStock = Product & Omit<Stock, 'product_id'>;
+
+export type ProductRequest = Omit<Product, 'id'> & Omit<Stock, 'product_id'>;

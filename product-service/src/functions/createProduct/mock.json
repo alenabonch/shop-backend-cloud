@@ -1,0 +1,10 @@
+{
+  "headers": {},
+  "pathParameters": {},
+  "body": {
+    "title": "Pie",
+    "description": "Apple pie",
+    "price": 10,
+    "count": 5
+  }
+}
