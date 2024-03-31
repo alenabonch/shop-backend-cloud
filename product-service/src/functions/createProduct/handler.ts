@@ -1,10 +1,11 @@
+import { TransactWriteItemsCommand } from "@aws-sdk/client-dynamodb";
 import { formatJSONResponse, ValidatedEventAPIGatewayProxyEvent } from '@libs/api-gateway';
 import { middyfy } from '@libs/lambda';
-import { createItem } from 'src/db/commands/create-item';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Schema, z } from 'zod';
-import { Product, ProductRequest, Stock } from '../../models/product';
+import { getDynamoDbClient } from '../../db';
+import { ProductRequest } from '../../models/product';
 
 const ProductRequestSchema = z.object({
   title: z.string(),
@@ -25,23 +26,37 @@ export const createProduct: ValidatedEventAPIGatewayProxyEvent<typeof Schema> = 
 
     const productId = uuidv4();
 
-    const product: Product = {
-      id: productId,
-      title: body.title,
-      description: body.description,
-      price: body.price,
+    const input = {
+      TransactItems: [
+        {
+          Put: {
+            Item: {
+              id: {S: productId},
+              title: {S: body.title},
+              description: {S: body.description},
+              price: {N: body.price.toString()},
+            },
+            TableName: process.env.PRODUCTS_TABLE,
+          },
+        },
+        {
+          Put: {
+            Item: {
+              product_id: {S: productId},
+              count: {N: (body.count || 0).toString()}
+            },
+            TableName: process.env.STOCKS_TABLE,
+          },
+        },
+      ],
     };
 
-    const stock: Stock =  {
-      product_id: productId,
-      count: body.count || 0,
-    }
-
-    await createItem(process.env.PRODUCTS_TABLE, product);
-    await createItem(process.env.STOCKS_TABLE, stock);
+    const command = new TransactWriteItemsCommand(input);
+    await getDynamoDbClient().send(command);
 
     return formatJSONResponse(productId);
   } catch (error) {
+    console.error(error);
     return formatJSONResponse({error}, 500);
   }
 };
