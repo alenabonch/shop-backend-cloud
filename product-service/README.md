@@ -98,6 +98,8 @@ Any tsconfig.json can be used, but if you do, set the environment variable `TS_N
 endpoints:
 GET - https://8oqq3o7flf.execute-api.us-east-1.amazonaws.com/dev/products
 GET - https://8oqq3o7flf.execute-api.us-east-1.amazonaws.com/dev/products/{productId}
+POST - https://8oqq3o7flf.execute-api.us-east-1.amazonaws.com/dev/products
 GET - https://8oqq3o7flf.execute-api.us-east-1.amazonaws.com/dev/swagger
 GET - https://8oqq3o7flf.execute-api.us-east-1.amazonaws.com/dev/swagger.json
+
 

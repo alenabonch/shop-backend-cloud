@@ -4,17 +4,24 @@
   "description": "Serverless aws-nodejs-typescript template",
   "main": "serverless.ts",
   "scripts": {
-    "test": "jest --watchAll"
+    "test": "jest --watchAll",
+    "deploy": "sls deploy",
+    "populate-data": "npx ts-node src/db/scripts/populate-data.ts"
   },
   "engines": {
     "node": ">=20.0.0"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.540.0",
+    "@aws-sdk/client-s3": "^3.537.0",
+    "@aws-sdk/lib-dynamodb": "^3.540.0",
     "@middy/core": "^3.4.0",
-    "@middy/http-json-body-parser": "^3.4.0"
+    "@middy/http-json-body-parser": "^3.4.0",
+    "serverless-dynamodb": "^0.2.51",
+    "uuid": "^9.0.1",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@aws-sdk/client-s3": "^3.537.0",
     "@serverless/typescript": "^3.0.0",
     "@types/aws-lambda": "^8.10.71",
     "@types/jest": "^29.5.12",
@@ -27,6 +34,7 @@
     "serverless": "^3.0.0",
     "serverless-auto-swagger": "^2.12.0",
     "serverless-esbuild": "^1.23.3",
+    "serverless-offline": "^13.3.3",
     "ts-node": "^10.4.0",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^4.1.3"

@@ -23,6 +23,23 @@
             "description": "200 response"
           }
         }
+      },
+      "post": {
+        "summary": "createProduct",
+        "description": "",
+        "operationId": "createProduct.post.products",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "200 response"
+          }
+        }
       }
     },
     "/products/{productId}": {
@@ -81,6 +98,33 @@
       "additionalProperties": false,
       "title": "Product",
       "type": "object"
+    },
+    "Stock": {
+      "properties": {
+        "product_id": {
+          "title": "Stock.product_id",
+          "type": "string"
+        },
+        "count": {
+          "title": "Stock.count",
+          "type": "number"
+        }
+      },
+      "required": [
+        "product_id",
+        "count"
+      ],
+      "additionalProperties": false,
+      "title": "Stock",
+      "type": "object"
+    },
+    "ProductWithStock": {
+      "$ref": "#/definitions/Product",
+      "title": "ProductWithStock"
+    },
+    "ProductRequest": {
+      "allOf": [],
+      "title": "ProductRequest"
     }
   },
   "securityDefinitions": {},
