@@ -1,10 +1,9 @@
-import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/api-gateway';
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { formatJSONResponse } from '@libs/api-gateway';
 import { middyfy } from '@libs/lambda';
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
-const importProductsFile: ValidatedEventAPIGatewayProxyEvent<undefined> = async (event) => {
+export const importProductsFile = async (event) => {
   try {
     console.log('Import products file handler', event);
     const client = new S3Client({region: 'us-east-1'});
