@@ -13,7 +13,7 @@ describe('importProductsFile', () => {
     const event = {queryStringParameters: {name: 'test.csv'}} as any;
     getSignedUrlMock.mockResolvedValue('example-url.com');
     const expectedInput = {
-      Bucket: process.env.BUCKET_NAME,
+      Bucket: process.env.IMPORT_BUCKET,
       Key: 'uploaded/test.csv',
     };
     const response = await importProductsFile(event);

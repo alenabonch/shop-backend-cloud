@@ -98,3 +98,20 @@ Any tsconfig.json can be used, but if you do, set the environment variable `TS_N
 GET - https://w9xlbvi7w8.execute-api.us-east-1.amazonaws.com/dev/import
 GET - https://w9xlbvi7w8.execute-api.us-east-1.amazonaws.com/dev/swagger
 GET - https://w9xlbvi7w8.execute-api.us-east-1.amazonaws.com/dev/swagger.json
+
+### Implementation notes
+CORS configuration of the bucket:
+[
+    {
+        "AllowedHeaders": [
+            "*"
+        ],
+        "AllowedMethods": [
+            "PUT",
+        ],
+        "AllowedOrigins": [
+            "*"
+        ],
+        "ExposeHeaders": []
+    }
+]
