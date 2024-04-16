@@ -180,19 +180,19 @@ const serverlessConfiguration: AWS = {
           }
         }
       },
-      // createProductOutOfStockTopicSubscription: {
-      //   Type: "AWS::SNS::Subscription",
-      //   Properties: {
-      //     Protocol: "email",
-      //     Endpoint: "tiggy@mail.ru",
-      //     TopicArn: {
-      //       Ref: "createProductTopic",
-      //     },
-      //     FilterPolicy: {
-      //       title: ["Filter product"],
-      //     },
-      //   },
-      // },
+      createProductOutOfStockTopicSubscription: {
+        Type: "AWS::SNS::Subscription",
+        Properties: {
+          Protocol: "email",
+          Endpoint: "tiggy@mail.ru",
+          TopicArn: {
+            Ref: "createProductTopic",
+          },
+          FilterPolicy: {
+            count: [{"numeric": ["<=", 0]}],
+          },
+        },
+      },
     }
   }
 };

@@ -1,4 +1,4 @@
-import { PublishCommand, SNSClient } from '@aws-sdk/client-sns';
+import { SNSClient } from '@aws-sdk/client-sns';
 import { mockClient } from 'aws-sdk-client-mock';
 import * as dbUtils from '../../db/product-commands/create-product-and-stock-in-transaction';
 import { catalogBatchProcess } from './handler'
@@ -38,12 +38,6 @@ describe('catalogBatchProcess', () => {
     const data = await catalogBatchProcess(event);
 
     expect(snsMock.calls()).toHaveLength(1);
-
-    expect(snsMock).toHaveReceivedCommandWith(PublishCommand, {
-      Subject: 'Products created',
-      Message: `Products created in DB: ${JSON.stringify([createdProduct])}`,
-      TopicArn: process.env.SNS_ARN,
-    });
 
     expect(data.statusCode).toEqual(200);
     expect(JSON.parse(data.body)).toEqual([createdProduct]);

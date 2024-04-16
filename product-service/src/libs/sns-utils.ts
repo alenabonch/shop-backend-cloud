@@ -4,19 +4,23 @@ import { ProductWithStock } from '../models/product';
 const snsClient = new SNSClient({region: process.env.REGION})
 
 export const sendProductsCreatedNotification = async (products: ProductWithStock[]) => {
-  const message = `Products created in DB: ${JSON.stringify(products)}`;
-  const subject = 'Products created';
-  const topicArn = process.env.SNS_ARN;
-  return sendNotification(message, subject, topicArn);
-};
+  for (const product of products) {
+    const message = `New product is created in the DB: ${JSON.stringify(product)}`;
+    const subject = 'New product is created';
+    const topicArn = process.env.SNS_ARN;
 
-export const sendNotification = async (message: string, subject: string, topicArn: string) => {
-  console.log('Sending notification', message, subject, topicArn);
-  return snsClient.send(
-      new PublishCommand({
-        Message: message,
-        Subject: subject,
-        TopicArn: topicArn,
-      }),
-  )
+    await snsClient.send(
+        new PublishCommand({
+          Message: message,
+          Subject: subject,
+          TopicArn: topicArn,
+          MessageAttributes: {
+            count: {
+              DataType: 'Number',
+              StringValue: product.count.toString()
+            }
+          }
+        }),
+    )
+  }
 };
