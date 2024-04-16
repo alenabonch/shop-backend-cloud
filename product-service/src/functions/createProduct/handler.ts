@@ -1,58 +1,21 @@
-import { TransactWriteItemsCommand } from "@aws-sdk/client-dynamodb";
 import { formatJSONResponse, ValidatedEventAPIGatewayProxyEvent } from '@libs/api-gateway';
 import { middyfy } from '@libs/lambda';
-import { v4 as uuidv4 } from 'uuid';
+import { isValidProductRequest } from '@libs/validate-product';
 
-import { Schema, z } from 'zod';
-import { getDynamoDbClient } from '../../db';
+import { Schema } from 'zod';
+import { createProductAndStockInTransaction } from '../../db/product-commands/create-product-and-stock-in-transaction';
 import { ProductRequest } from '../../models/product';
-
-const ProductRequestSchema = z.object({
-  title: z.string(),
-  description: z.string(),
-  price: z.number(),
-  count: z.optional(z.number()),
-});
 
 export const createProduct: ValidatedEventAPIGatewayProxyEvent<typeof Schema> = async (event) => {
   try {
     console.log('Create product handler', event);
-    const body = event.body as ProductRequest;
-    const parsedBody = ProductRequestSchema.safeParse(body);
+    const productRequest = event.body as ProductRequest;
 
-    if (!parsedBody.success) {
+    if (!isValidProductRequest(productRequest)) {
       return formatJSONResponse({error: 'Product is not valid'}, 400);
     }
 
-    const productId = uuidv4();
-
-    const input = {
-      TransactItems: [
-        {
-          Put: {
-            Item: {
-              id: {S: productId},
-              title: {S: body.title},
-              description: {S: body.description},
-              price: {N: body.price.toString()},
-            },
-            TableName: process.env.PRODUCTS_TABLE,
-          },
-        },
-        {
-          Put: {
-            Item: {
-              product_id: {S: productId},
-              count: {N: (body.count || 0).toString()}
-            },
-            TableName: process.env.STOCKS_TABLE,
-          },
-        },
-      ],
-    };
-
-    const command = new TransactWriteItemsCommand(input);
-    await getDynamoDbClient().send(command);
+    const productId = await createProductAndStockInTransaction(productRequest);
 
     return formatJSONResponse(productId);
   } catch (error) {
