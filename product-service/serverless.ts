@@ -179,7 +179,20 @@ const serverlessConfiguration: AWS = {
             Ref: 'createProductTopic'
           }
         }
-      }
+      },
+      // createProductOutOfStockTopicSubscription: {
+      //   Type: "AWS::SNS::Subscription",
+      //   Properties: {
+      //     Protocol: "email",
+      //     Endpoint: "tiggy@mail.ru",
+      //     TopicArn: {
+      //       Ref: "createProductTopic",
+      //     },
+      //     FilterPolicy: {
+      //       title: ["Filter product"],
+      //     },
+      //   },
+      // },
     }
   }
 };

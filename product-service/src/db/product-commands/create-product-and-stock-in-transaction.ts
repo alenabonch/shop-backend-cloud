@@ -1,9 +1,9 @@
 import { TransactWriteItemsCommand } from '@aws-sdk/client-dynamodb';
-import { ProductRequest } from '../../models/product';
 import { v4 as uuidv4 } from 'uuid';
+import { ProductRequest, ProductWithStock } from '../../models/product';
 import { getDynamoDbClient } from '../index';
 
-export async function createProductAndStockInTransaction(product: ProductRequest): Promise<string> {
+export async function createProductAndStockInTransaction(product: ProductRequest): Promise<ProductWithStock> {
   const productId = uuidv4();
   console.log('Creating product and stock in transaction with product id', productId);
 
@@ -35,5 +35,5 @@ export async function createProductAndStockInTransaction(product: ProductRequest
   const command = new TransactWriteItemsCommand(input);
   await getDynamoDbClient().send(command);
 
-  return productId;
+  return {...product, id: productId};
 }
