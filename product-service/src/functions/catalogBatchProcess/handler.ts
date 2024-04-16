@@ -26,5 +26,3 @@ export const catalogBatchProcess = async (event: SQSEvent) => {
 };
 
 export const main = catalogBatchProcess;
-
-
