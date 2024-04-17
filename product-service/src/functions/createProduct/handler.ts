@@ -15,9 +15,9 @@ export const createProduct: ValidatedEventAPIGatewayProxyEvent<typeof Schema> = 
       return formatJSONResponse({error: 'Product is not valid'}, 400);
     }
 
-    const productId = await createProductAndStockInTransaction(productRequest);
+    const product = await createProductAndStockInTransaction(productRequest);
 
-    return formatJSONResponse(productId);
+    return formatJSONResponse(product);
   } catch (error) {
     console.error(error);
     return formatJSONResponse({error}, 500);
