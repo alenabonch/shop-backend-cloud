@@ -25,7 +25,8 @@ const serverlessConfiguration: AWS = {
       REGION: '${self:provider.region}',
       IMPORT_BUCKET: 'sls-live-app-import-service-bucket',
       CLOUDWATCH_LOG_GROUP: 'import-file-logs',
-      CLOUDWATCH_LOG_STREAM: 'import-file-stream'
+      CLOUDWATCH_LOG_STREAM: 'import-file-stream',
+      CATALOG_ITEMS_QUEUE: 'catalogItemsQueue',
     },
     iamRoleStatements: [
       {
@@ -46,7 +47,12 @@ const serverlessConfiguration: AWS = {
           'logs:PutLogEvents',
         ],
         Resource: '*'
-      }
+      },
+      {
+        Effect: "Allow",
+        Action: ["sqs:SendMessage", "sqs:GetQueueUrl"],
+        Resource: "*",
+      },
     ],
   },
   // import the function via paths
@@ -69,6 +75,7 @@ const serverlessConfiguration: AWS = {
     autoswagger: {
       apiType: 'http',
       basePath: '/${sls:stage}',
+      generateSwaggerOnDeploy: false,
     }
   },
 };
