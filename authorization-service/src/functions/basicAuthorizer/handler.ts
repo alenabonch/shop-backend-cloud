@@ -30,9 +30,13 @@ const basicAuthorizer = (event: APIGatewayTokenAuthorizerEvent, _, callback) => 
 
   try {
     const {authorizationToken, methodArn} = event;
-    const encodedCreds = authorizationToken.split(' ')[1];
+    const encodedCreds = authorizationToken.split(' ')[1] || '';
     const buff = Buffer.from(encodedCreds, 'base64');
     const [username, password] = buff.toString('utf-8').split(':');
+
+    if (!username || !password) {
+      callback('Unauthorized');
+    }
 
     const storedUserPassword = process.env[username];
     const effect = !storedUserPassword || storedUserPassword !== password ? Effect.DENY : Effect.ALLOW;
@@ -40,7 +44,7 @@ const basicAuthorizer = (event: APIGatewayTokenAuthorizerEvent, _, callback) => 
 
     return callback(null, policy);
   } catch (e) {
-    callback(`Unauthorized: ${e.message}`)
+    callback(`Unauthorized: ${e.message}`);
   }
 };
 
