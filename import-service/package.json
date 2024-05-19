@@ -19,6 +19,7 @@
     "@middy/http-cors": "^5.3.2",
     "@middy/http-json-body-parser": "^3.4.0",
     "@types/node-fetch": "^2.6.11",
+    "axios": "^1.6.8",
     "csv-parser": "^3.0.0",
     "jest": "^29.7.0"
   },
